@@ -19,10 +19,10 @@ public class MesaDosFilosofos extends javax.swing.JFrame {
         initComponents();
         setExtendedState(java.awt.Frame.MAXIMIZED_BOTH);
         initTalheres();
-        initFilosofos();
+        initFilosofosComponentes();
     }
 
-    private void initFilosofos() {
+    private void initFilosofosComponentes() {
         int quantidadeDeFilosofosCadaLadoDaMesa = (int) Math.round(QUANTIDADE_FILOSOFOS / 4d);
         int linhas = quantidadeDeFilosofosCadaLadoDaMesa + 2;
         int colunas = (quantidadeDeFilosofosCadaLadoDaMesa * 4) < QUANTIDADE_FILOSOFOS ? linhas + 1 : linhas;
@@ -40,12 +40,13 @@ public class MesaDosFilosofos extends javax.swing.JFrame {
         }
 
         int numeroFilosofo = 0;
-        for (int linha = 1, coluna = colunas - 1; linha < linhas;) {
+        int linha = 1;
+        int coluna = colunas - 1;
+        while (linha < linhas) {
             JPanel jPanel = jPanelsFilosofos[linha][coluna];
 
             JFilosofo jFilosofo = new JFilosofo();
             jFilosofo.setNomeFilofoso(String.format("Filósofo %s", ++numeroFilosofo));
-            jFilosofo.setStatusFilosofo(StatusFilosofo.Pensando);
             jPanel.add(jFilosofo);
 
             initFilosofoThread(jFilosofo, numeroFilosofo);
@@ -89,7 +90,9 @@ public class MesaDosFilosofos extends javax.swing.JFrame {
     }
 
     private void initFilosofoThread(JFilosofo jFilosofo, int id) {
-        new Thread(new Filosofo(id, QUANTIDADE_FILOSOFOS, jFilosofo)).start();
+        Filosofo filosofo = new Filosofo(id, QUANTIDADE_FILOSOFOS, jFilosofo);
+        filosofo.setStatusFilosofo(StatusFilosofo.Pensando);
+        new Thread(filosofo).start();
     }
 
     private static void initTalheres() {

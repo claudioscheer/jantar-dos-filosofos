@@ -9,34 +9,14 @@ public class Filosofo implements Runnable {
     private final int id;
     private int indexTalherDireita;
     private int indexTalherEsquerda;
+    // Não é usado mas vai ficar.
     private StatusFilosofo statusFilosofo;
     private final JFilosofo jFilosofo;
 
     public Filosofo(int id, int quantidadeDeFilosofos, JFilosofo jFilosofo) {
         this.id = id;
         this.jFilosofo = jFilosofo;
-        this.statusFilosofo = StatusFilosofo.Pensando;
         setTalheres(quantidadeDeFilosofos);
-    }
-
-    public int getTalherDireita() {
-        return indexTalherDireita;
-    }
-
-    public void setTalherDireita(int talherDireita) {
-        this.indexTalherDireita = talherDireita;
-    }
-
-    public int getTalherEsquerda() {
-        return indexTalherEsquerda;
-    }
-
-    public void setTalherEsquerda(int talherEsquerda) {
-        this.indexTalherEsquerda = talherEsquerda;
-    }
-
-    public StatusFilosofo getStatusFilosofo() {
-        return statusFilosofo;
     }
 
     public void setStatusFilosofo(StatusFilosofo statusFilosofo) {
@@ -58,9 +38,9 @@ public class Filosofo implements Runnable {
         talherDireita.getSemaforo().acquire();
         if (talherDireita.getStatusTalher() == StatusTalher.EmUso) {
             talherDireita.getSemaforo().release();
+            // Não pôde pegar a talher da direita.
             return false;
         }
-
         talherDireita.setStatusTalher(StatusTalher.EmUso);
         talherDireita.getSemaforo().release();
 
@@ -68,36 +48,42 @@ public class Filosofo implements Runnable {
         talherEsquerda.getSemaforo().acquire();
         if (talherEsquerda.getStatusTalher() == StatusTalher.EmUso) {
             talherEsquerda.getSemaforo().release();
+
             talherDireita.getSemaforo().acquire();
             talherDireita.setStatusTalher(StatusTalher.Livre);
             talherDireita.getSemaforo().release();
+
+            // Não pôde pegar a talher da esquerda, então, solta a talher da direita.
             return false;
         }
         talherEsquerda.setStatusTalher(StatusTalher.EmUso);
         talherEsquerda.getSemaforo().release();
 
-        setStatusFilosofo(StatusFilosofo.Comendo);
         return true;
     }
 
     private void pararDeComer() throws InterruptedException {
         TalheresSingleton.getInstance()[indexTalherDireita].setStatusTalher(StatusTalher.Livre);
         TalheresSingleton.getInstance()[indexTalherEsquerda].setStatusTalher(StatusTalher.Livre);
-
-        setStatusFilosofo(StatusFilosofo.Pensando);
     }
 
     @Override
     public void run() {
         while (true) {
             try {
+                // O filósofo vai tentar comer e fica 1.5 segundos com fome só para dar tempo de mostrar isso em tela.
+                setStatusFilosofo(StatusFilosofo.ComFome);
+                Thread.sleep(1500);
                 if (tentarComer()) {
+                    // Conseguiu pegar as duas talheres.
+                    setStatusFilosofo(StatusFilosofo.Comendo);
                     // Tempo que o filósofo fica comendo.
-                    Thread.sleep(((int) Math.random() * 4000) + 500);
+                    Thread.sleep((int) (Math.random() * 4000) + 1500);
                     pararDeComer();
                 }
+                setStatusFilosofo(StatusFilosofo.Pensando);
                 // Tempo que o filósofo fica pensando.
-                Thread.sleep(((int) Math.random() * 2000) + 500);
+                Thread.sleep((int) (Math.random() * 2000) + 1500);
             } catch (InterruptedException ex) {
                 ex.printStackTrace();
             }
