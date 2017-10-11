@@ -1,5 +1,6 @@
 
-import javax.swing.JPanel;
+import enums.StatusTalher;
+import enums.StatusFilosofo;
 
 public class Filosofo implements Runnable {
 

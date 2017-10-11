@@ -1,26 +1,21 @@
 
-import javax.swing.JLabel;
-import javax.swing.JPanel;
+import controls.JFilosofo;
+import enums.StatusTalher;
+import enums.StatusFilosofo;
 
 public class FilosofoVisual implements Runnable {
 
     private final int id;
-    private final int quantidadeDeFilosofos;
     private int indexTalherDireita;
     private int indexTalherEsquerda;
     private StatusFilosofo statusFilosofo;
-    private int linha;
-    private int coluna;
-    private JPanel[][] panelsFilosofos;
+    private final JFilosofo jFilosofo;
 
-    public FilosofoVisual(int id, int quantidadeDeFilosofos, JPanel[][] panelsFilosofos, int linha, int coluna) {
+    public FilosofoVisual(int id, int quantidadeDeFilosofos, JFilosofo jFilosofo) {
         this.id = id;
-        this.quantidadeDeFilosofos = quantidadeDeFilosofos;
-        this.panelsFilosofos = panelsFilosofos;
-        this.coluna = coluna;
-        this.linha = linha;
+        this.jFilosofo = jFilosofo;
         this.statusFilosofo = StatusFilosofo.Pensando;
-        setTalheres();
+        setTalheres(quantidadeDeFilosofos);
     }
 
     public int getTalherDireita() {
@@ -47,7 +42,7 @@ public class FilosofoVisual implements Runnable {
         this.statusFilosofo = statusFilosofo;
     }
 
-    private void setTalheres() {
+    private void setTalheres(int quantidadeDeFilosofos) {
         if (id == 1) {
             indexTalherDireita = quantidadeDeFilosofos - 1;
         } else {
@@ -76,11 +71,7 @@ public class FilosofoVisual implements Runnable {
         talherEsquerda.setStatusTalher(StatusTalher.EmUso);
         talherEsquerda.getSemaforo().release();
 
-        JPanel panel = panelsFilosofos[linha][coluna];
-        panel.removeAll();
-        panel.add(new JLabel(String.format("Filósofo %s comendo.", id)));
-        panel.revalidate();
-        panel.repaint();
+        jFilosofo.setStatusFilosofo(StatusFilosofo.Comendo);
         return true;
     }
 
@@ -95,11 +86,7 @@ public class FilosofoVisual implements Runnable {
         talherEsquerda.setStatusTalher(StatusTalher.Livre);
         talherEsquerda.getSemaforo().release();
 
-        JPanel panel = panelsFilosofos[linha][coluna];
-        panel.removeAll();
-        panel.add(new JLabel(String.format("Filósofo %s pensando.", id)));
-        panel.revalidate();
-        panel.repaint();
+        jFilosofo.setStatusFilosofo(StatusFilosofo.Pensando);
     }
 
     @Override
@@ -107,12 +94,8 @@ public class FilosofoVisual implements Runnable {
         while (true) {
             try {
                 if (tentarComer()) {
-                    System.out.println(String.format("Filósofo %s comeu.", id));
                     Thread.sleep(((int) Math.random() * 2000) + 1000);
                     pararDeComer();
-                    System.out.println(String.format("Filósofo %s parou de comer.", id));
-                } else {
-                    // System.out.println(String.format("Filósofo %s tentou comer.", id));
                 }
                 Thread.sleep(((int) Math.random() * 5000) + 1000);
             } catch (InterruptedException ex) {
