@@ -1,8 +1,9 @@
+package classes;
 
 import enums.StatusTalher;
 import java.util.concurrent.Semaphore;
 
-class Talher {
+public class Talher {
 
     private StatusTalher statusTalher;
     private Semaphore semaforo;

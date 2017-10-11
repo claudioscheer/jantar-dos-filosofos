@@ -1,3 +1,4 @@
+package classes;
 
 public class TalheresSingleton {
 
@@ -10,4 +11,7 @@ public class TalheresSingleton {
         return _instance;
     }
 
+    public static Talher[] getInstance() {
+        return getInstance(0);
+    }
 }

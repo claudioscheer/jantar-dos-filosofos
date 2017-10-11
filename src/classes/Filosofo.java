@@ -1,9 +1,10 @@
+package classes;
 
 import controls.JFilosofo;
 import enums.StatusTalher;
 import enums.StatusFilosofo;
 
-public class FilosofoVisual implements Runnable {
+public class Filosofo implements Runnable {
 
     private final int id;
     private int indexTalherDireita;
@@ -11,7 +12,7 @@ public class FilosofoVisual implements Runnable {
     private StatusFilosofo statusFilosofo;
     private final JFilosofo jFilosofo;
 
-    public FilosofoVisual(int id, int quantidadeDeFilosofos, JFilosofo jFilosofo) {
+    public Filosofo(int id, int quantidadeDeFilosofos, JFilosofo jFilosofo) {
         this.id = id;
         this.jFilosofo = jFilosofo;
         this.statusFilosofo = StatusFilosofo.Pensando;
@@ -52,7 +53,7 @@ public class FilosofoVisual implements Runnable {
     }
 
     private boolean tentarComer() throws InterruptedException {
-        Talher talherDireita = TalheresSingleton.getInstance(0)[indexTalherDireita];
+        Talher talherDireita = TalheresSingleton.getInstance()[indexTalherDireita];
         if (talherDireita.getStatusTalher() == StatusTalher.EmUso) {
             return false;
         }
@@ -60,7 +61,7 @@ public class FilosofoVisual implements Runnable {
         talherDireita.setStatusTalher(StatusTalher.EmUso);
         talherDireita.getSemaforo().release();
 
-        Talher talherEsquerda = TalheresSingleton.getInstance(0)[indexTalherEsquerda];
+        Talher talherEsquerda = TalheresSingleton.getInstance()[indexTalherEsquerda];
         if (talherEsquerda.getStatusTalher() == StatusTalher.EmUso) {
             talherDireita.getSemaforo().acquire();
             talherDireita.setStatusTalher(StatusTalher.Livre);
@@ -76,12 +77,12 @@ public class FilosofoVisual implements Runnable {
     }
 
     private void pararDeComer() throws InterruptedException {
-        Talher talherDireita = TalheresSingleton.getInstance(0)[indexTalherDireita];
+        Talher talherDireita = TalheresSingleton.getInstance()[indexTalherDireita];
         talherDireita.getSemaforo().acquire();
         talherDireita.setStatusTalher(StatusTalher.Livre);
         talherDireita.getSemaforo().release();
 
-        Talher talherEsquerda = TalheresSingleton.getInstance(0)[indexTalherEsquerda];
+        Talher talherEsquerda = TalheresSingleton.getInstance()[indexTalherEsquerda];
         talherEsquerda.getSemaforo().acquire();
         talherEsquerda.setStatusTalher(StatusTalher.Livre);
         talherEsquerda.getSemaforo().release();
@@ -93,11 +94,15 @@ public class FilosofoVisual implements Runnable {
     public void run() {
         while (true) {
             try {
-                if (tentarComer()) {
-                    Thread.sleep(((int) Math.random() * 2000) + 1000);
+                // Dois filósofos não podem tentar comer ao mesmo tempo.
+                SemaforoMesaDosFilosofos.getInstance().acquire();
+                boolean comeu = tentarComer();
+                SemaforoMesaDosFilosofos.getInstance().release();
+                if (comeu) {
+                    Thread.sleep(((int) Math.random() * 4000) + 2000);
                     pararDeComer();
                 }
-                Thread.sleep(((int) Math.random() * 5000) + 1000);
+                Thread.sleep(((int) Math.random() * 2000) + 2000);
             } catch (InterruptedException ex) {
                 ex.printStackTrace();
             }

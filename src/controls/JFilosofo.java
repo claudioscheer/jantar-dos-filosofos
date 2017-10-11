@@ -16,11 +16,11 @@ public class JFilosofo extends javax.swing.JPanel {
 
     public void setStatusFilosofo(StatusFilosofo statusFilosofo) {
         lblStatusFilosofo.setText(statusFilosofo.toString());
+
         Container parent = getParent();
         if (parent == null) {
             return;
         }
-
         if (statusFilosofo == StatusFilosofo.Comendo) {
             parent.setBackground(Color.red);
         } else {

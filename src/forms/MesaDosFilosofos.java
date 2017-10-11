@@ -1,4 +1,8 @@
+package forms;
 
+import classes.TalheresSingleton;
+import classes.Talher;
+import classes.Filosofo;
 import controls.JFilosofo;
 import enums.StatusFilosofo;
 import java.awt.Color;
@@ -7,22 +11,22 @@ import java.awt.GridLayout;
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 
-public class JantarDosFilosofosVisual extends javax.swing.JFrame {
-    
-    private static final int QUANTIDADE_FILOSOFOS = 7;
-    
-    public JantarDosFilosofosVisual() {
+public class MesaDosFilosofos extends javax.swing.JFrame {
+
+    private static final int QUANTIDADE_FILOSOFOS = 30;
+
+    public MesaDosFilosofos() {
         initComponents();
         initTalheres();
         initFilosofos();
     }
-    
+
     private void initFilosofos() {
         int quantidadeDeFilosofosCadaLadoDaMesa = (int) Math.round(QUANTIDADE_FILOSOFOS / 4d);
         int linhas = quantidadeDeFilosofosCadaLadoDaMesa + 2;
         int colunas = (quantidadeDeFilosofosCadaLadoDaMesa * 4) < QUANTIDADE_FILOSOFOS ? linhas + 1 : linhas;
         panelMesa.setLayout(new GridLayout(linhas, colunas));
-        
+
         JPanel[][] jPanelsFilosofos = new JPanel[linhas][colunas];
         for (int i = 0; i < linhas; i++) {
             for (int j = 0; j < colunas; j++) {
@@ -33,16 +37,16 @@ public class JantarDosFilosofosVisual extends javax.swing.JFrame {
                 panelMesa.add(jPanel);
             }
         }
-        
+
         int numeroFilosofo = 0;
         for (int linha = 1, coluna = colunas - 1; linha < linhas;) {
             JPanel jPanel = jPanelsFilosofos[linha][coluna];
-            
+
             JFilosofo jFilosofo = new JFilosofo();
             jFilosofo.setNomeFilofoso(String.format("Filósofo %s", ++numeroFilosofo));
             jFilosofo.setStatusFilosofo(StatusFilosofo.Pensando);
             jPanel.add(jFilosofo);
-            
+
             initFilosofoThread(jFilosofo, numeroFilosofo);
 
             // Está preenchendo o lado direito da mesa.
@@ -82,18 +86,18 @@ public class JantarDosFilosofosVisual extends javax.swing.JFrame {
             }
         }
     }
-    
+
     private void initFilosofoThread(JFilosofo jFilosofo, int id) {
-        new Thread(new FilosofoVisual(id, QUANTIDADE_FILOSOFOS, jFilosofo)).start();
+        new Thread(new Filosofo(id, QUANTIDADE_FILOSOFOS, jFilosofo)).start();
     }
-    
+
     private static void initTalheres() {
         Talher[] talheres = TalheresSingleton.getInstance(QUANTIDADE_FILOSOFOS);
         for (int i = 0; i < QUANTIDADE_FILOSOFOS; i++) {
             talheres[i] = new Talher();
         }
     }
-    
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -142,19 +146,22 @@ public class JantarDosFilosofosVisual extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(JantarDosFilosofosVisual.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(MesaDosFilosofos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(JantarDosFilosofosVisual.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(MesaDosFilosofos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(JantarDosFilosofosVisual.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(MesaDosFilosofos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(JantarDosFilosofosVisual.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(MesaDosFilosofos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
 
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new JantarDosFilosofosVisual().setVisible(true);
+                new MesaDosFilosofos().setVisible(true);
             }
         });
     }
