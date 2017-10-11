@@ -1,17 +1,24 @@
 
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-public class Filosofo implements Runnable {
+public class FilosofoVisual implements Runnable {
 
     private final int id;
     private final int quantidadeDeFilosofos;
     private int indexTalherDireita;
     private int indexTalherEsquerda;
     private StatusFilosofo statusFilosofo;
+    private int linha;
+    private int coluna;
+    private JPanel[][] panelsFilosofos;
 
-    public Filosofo(int id, int quantidadeDeFilosofos) {
+    public FilosofoVisual(int id, int quantidadeDeFilosofos, JPanel[][] panelsFilosofos, int linha, int coluna) {
         this.id = id;
         this.quantidadeDeFilosofos = quantidadeDeFilosofos;
+        this.panelsFilosofos = panelsFilosofos;
+        this.coluna = coluna;
+        this.linha = linha;
         this.statusFilosofo = StatusFilosofo.Pensando;
         setTalheres();
     }
@@ -69,6 +76,11 @@ public class Filosofo implements Runnable {
         talherEsquerda.setStatusTalher(StatusTalher.EmUso);
         talherEsquerda.getSemaforo().release();
 
+        JPanel panel = panelsFilosofos[linha][coluna];
+        panel.removeAll();
+        panel.add(new JLabel(String.format("Filósofo %s comendo.", id)));
+        panel.revalidate();
+        panel.repaint();
         return true;
     }
 
@@ -82,6 +94,12 @@ public class Filosofo implements Runnable {
         talherEsquerda.getSemaforo().acquire();
         talherEsquerda.setStatusTalher(StatusTalher.Livre);
         talherEsquerda.getSemaforo().release();
+
+        JPanel panel = panelsFilosofos[linha][coluna];
+        panel.removeAll();
+        panel.add(new JLabel(String.format("Filósofo %s pensando.", id)));
+        panel.revalidate();
+        panel.repaint();
     }
 
     @Override

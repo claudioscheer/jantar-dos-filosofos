@@ -5,11 +5,12 @@ import javax.swing.JPanel;
 
 public class JantarDosFilosofosVisual extends javax.swing.JFrame {
 
-    private static final int QUANTIDADE_FILOSOFOS = 14;
+    private static final int QUANTIDADE_FILOSOFOS = 5;
     private JPanel[][] panelsFilosofos;
 
     public JantarDosFilosofosVisual() {
         initComponents();
+        initTalheres();
         initFilosofos();
     }
 
@@ -32,6 +33,7 @@ public class JantarDosFilosofosVisual extends javax.swing.JFrame {
         for (int linha = 1, coluna = colunas - 1; linha < linhas;) {
             JPanel panel = panelsFilosofos[linha][coluna];
             panel.add(new JLabel(String.format("Filósofo %s", ++numeroFilosofo)));
+            initFilosofoThread(linha, coluna, numeroFilosofo);
             // Está preenchendo o lado direito da mesa.
             if (coluna == colunas - 1) {
                 if (linha < linhas - 2) {
@@ -68,7 +70,17 @@ public class JantarDosFilosofosVisual extends javax.swing.JFrame {
                 }
             }
         }
+    }
 
+    private void initFilosofoThread(int linha, int coluna, int id) {
+        new Thread(new FilosofoVisual(id, QUANTIDADE_FILOSOFOS, panelsFilosofos, linha, coluna)).start();
+    }
+
+    private static void initTalheres() {
+        Talher[] talheres = TalheresSingleton.getInstance(QUANTIDADE_FILOSOFOS);
+        for (int i = 0; i < QUANTIDADE_FILOSOFOS; i++) {
+            talheres[i] = new Talher();
+        }
     }
 
     @SuppressWarnings("unchecked")
