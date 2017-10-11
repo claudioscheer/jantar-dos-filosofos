@@ -78,12 +78,12 @@ public class Filosofo implements Runnable {
                     // Conseguiu pegar as duas talheres.
                     setStatusFilosofo(StatusFilosofo.Comendo);
                     // Tempo que o filósofo fica comendo.
-                    Thread.sleep((int) (Math.random() * 4000) + 1500);
+                    Thread.sleep((int) (Math.random() * 1000) + 500);
+                    setStatusFilosofo(StatusFilosofo.Pensando);
                     pararDeComer();
                 }
-                setStatusFilosofo(StatusFilosofo.Pensando);
                 // Tempo que o filósofo fica pensando.
-                Thread.sleep((int) (Math.random() * 2000) + 1500);
+                Thread.sleep((int) (Math.random() * 1000) + 500);
             } catch (InterruptedException ex) {
                 ex.printStackTrace();
             }

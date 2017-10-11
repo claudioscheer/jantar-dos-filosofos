@@ -13,7 +13,7 @@ import javax.swing.JPanel;
 
 public class MesaDosFilosofos extends javax.swing.JFrame {
 
-    private static final int QUANTIDADE_FILOSOFOS = 24;
+    private static final int QUANTIDADE_FILOSOFOS = 6;
 
     public MesaDosFilosofos() {
         initComponents();
@@ -53,6 +53,9 @@ public class MesaDosFilosofos extends javax.swing.JFrame {
 
             // Está preenchendo o lado direito da mesa.
             if (coluna == colunas - 1) {
+                if (numeroFilosofo >= QUANTIDADE_FILOSOFOS) {
+                    break;
+                }
                 if (linha < linhas - 2) {
                     linha++;
                 } else {
@@ -61,6 +64,9 @@ public class MesaDosFilosofos extends javax.swing.JFrame {
                 }
             } // Está preenchendo a parte de baixo da mesa.
             else if (linha == linhas - 1) {
+                if (numeroFilosofo >= QUANTIDADE_FILOSOFOS) {
+                    break;
+                }
                 if (coluna == 1) {
                     linha--;
                     coluna--;
