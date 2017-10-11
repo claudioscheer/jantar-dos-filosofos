@@ -23,8 +23,14 @@ public class JFilosofo extends javax.swing.JPanel {
         }
         if (statusFilosofo == StatusFilosofo.Comendo) {
             parent.setBackground(Color.red);
+            setBackground(Color.red);
+            lblNomeFilosofo.setForeground(Color.white);
+            lblStatusFilosofo.setForeground(Color.white);
         } else {
             parent.setBackground(Color.white);
+            setBackground(Color.white);
+            lblNomeFilosofo.setForeground(Color.black);
+            lblStatusFilosofo.setForeground(Color.black);
         }
     }
 

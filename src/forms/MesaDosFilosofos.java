@@ -13,10 +13,11 @@ import javax.swing.JPanel;
 
 public class MesaDosFilosofos extends javax.swing.JFrame {
 
-    private static final int QUANTIDADE_FILOSOFOS = 30;
+    private static final int QUANTIDADE_FILOSOFOS = 24;
 
     public MesaDosFilosofos() {
         initComponents();
+        setExtendedState(java.awt.Frame.MAXIMIZED_BOTH);
         initTalheres();
         initFilosofos();
     }
@@ -105,8 +106,11 @@ public class MesaDosFilosofos extends javax.swing.JFrame {
         panelMesa = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Jantar do Filósofos");
 
         panelMesa.setBackground(new java.awt.Color(255, 255, 255));
+        panelMesa.setMaximumSize(null);
+        panelMesa.setMinimumSize(null);
 
         javax.swing.GroupLayout panelMesaLayout = new javax.swing.GroupLayout(panelMesa);
         panelMesa.setLayout(panelMesaLayout);
@@ -154,9 +158,6 @@ public class MesaDosFilosofos extends javax.swing.JFrame {
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(MesaDosFilosofos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
         //</editor-fold>
 
         java.awt.EventQueue.invokeLater(new Runnable() {
