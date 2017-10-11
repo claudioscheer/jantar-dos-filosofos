@@ -43,6 +43,10 @@ public class MesaDosFilosofos extends javax.swing.JFrame {
         int linha = 1;
         int coluna = colunas - 1;
         while (linha < linhas) {
+            if (numeroFilosofo >= QUANTIDADE_FILOSOFOS) {
+                break;
+            }
+
             JPanel jPanel = jPanelsFilosofos[linha][coluna];
 
             JFilosofo jFilosofo = new JFilosofo();
@@ -53,9 +57,6 @@ public class MesaDosFilosofos extends javax.swing.JFrame {
 
             // Está preenchendo o lado direito da mesa.
             if (coluna == colunas - 1) {
-                if (numeroFilosofo >= QUANTIDADE_FILOSOFOS) {
-                    break;
-                }
                 if (linha < linhas - 2) {
                     linha++;
                 } else {
@@ -64,9 +65,6 @@ public class MesaDosFilosofos extends javax.swing.JFrame {
                 }
             } // Está preenchendo a parte de baixo da mesa.
             else if (linha == linhas - 1) {
-                if (numeroFilosofo >= QUANTIDADE_FILOSOFOS) {
-                    break;
-                }
                 if (coluna == 1) {
                     linha--;
                     coluna--;
@@ -76,9 +74,6 @@ public class MesaDosFilosofos extends javax.swing.JFrame {
             } // Está preenchendo o lado esquerdo da mesa.
             else if (coluna == 0) {
                 if (linha == 1) {
-                    if (numeroFilosofo >= QUANTIDADE_FILOSOFOS) {
-                        break;
-                    }
                     linha--;
                     coluna++;
                 } else {
@@ -86,11 +81,7 @@ public class MesaDosFilosofos extends javax.swing.JFrame {
                 }
             } // Está preenchendo a parte de cima da mesa.
             else if (linha == 0) {
-                if (numeroFilosofo >= QUANTIDADE_FILOSOFOS) {
-                    break;
-                } else {
-                    coluna++;
-                }
+                coluna++;
             }
         }
     }
