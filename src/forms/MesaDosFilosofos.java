@@ -1,7 +1,6 @@
 package forms;
 
 import classes.TalheresSingleton;
-import classes.Talher;
 import classes.Filosofo;
 import controls.JFilosofo;
 import enums.StatusFilosofo;
@@ -13,12 +12,12 @@ import javax.swing.JPanel;
 
 public class MesaDosFilosofos extends javax.swing.JFrame {
 
-    private static final int QUANTIDADE_FILOSOFOS = 6;
+    private static final int QUANTIDADE_FILOSOFOS = 7;
 
     public MesaDosFilosofos() {
         initComponents();
         setExtendedState(java.awt.Frame.MAXIMIZED_BOTH);
-        initTalheres();
+        TalheresSingleton.getInstance(QUANTIDADE_FILOSOFOS);
         initFilosofosComponentes();
     }
 
@@ -90,13 +89,6 @@ public class MesaDosFilosofos extends javax.swing.JFrame {
         Filosofo filosofo = new Filosofo(id, QUANTIDADE_FILOSOFOS, jFilosofo);
         filosofo.setStatusFilosofo(StatusFilosofo.Pensando);
         new Thread(filosofo).start();
-    }
-
-    private static void initTalheres() {
-        Talher[] talheres = TalheresSingleton.getInstance(QUANTIDADE_FILOSOFOS);
-        for (int i = 0; i < QUANTIDADE_FILOSOFOS; i++) {
-            talheres[i] = new Talher();
-        }
     }
 
     @SuppressWarnings("unchecked")
